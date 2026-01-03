@@ -1,22 +1,22 @@
-# APIRestMain - Documentacion del proyecto
+# APIRestMain - Documentación del proyecto
 
-## Vision general
-Proyecto Spring Boot para una API REST sencilla de gestion de clientes. Expone endpoints CRUD, usa JPA con MySQL y aplica una arquitectura en capas con controlador, servicio y acceso a datos. Incluye DTOs y un payload estandar para respuestas.
+## Visión general
+Proyecto Spring Boot para una API REST sencilla de gestión de clientes. Expone endpoints CRUD, usa JPA con MySQL y aplica una arquitectura en capas con controlador, servicio y acceso a datos. Incluye DTOs y un payload estándar para respuestas.
 
-## Tecnologias y dependencias
+## Tecnologías y dependencias
 - Java 17
 - Spring Boot 3.5.9
 - spring-boot-starter-web (API REST)
 - spring-boot-starter-data-jpa (persistencia)
 - MySQL Connector/J (base de datos)
-- Lombok (reduccion de boilerplate)
+- Lombok (reducción de boilerplate)
 - Spring Boot Test (tests)
 
 ## Arquitectura y patrones
 - Arquitectura en capas:
   - Controller: recibe solicitudes HTTP y arma respuestas.
-  - Service: contiene logica de negocio y orquesta persistencia.
-  - DAO/Repository: acceso a datos via Spring Data.
+  - Service: contiene lógica de negocio y orquesta persistencia.
+  - DAO/Repository: acceso a datos vía Spring Data.
   - Entity: modelo persistente JPA.
   - DTO: modelo de transferencia expuesto a la API.
 - Patrones/estilos:
@@ -24,10 +24,10 @@ Proyecto Spring Boot para una API REST sencilla de gestion de clientes. Expone e
   - DTO pattern para desacoplar entidad de la API.
   - Builder pattern (Lombok) para crear objetos.
   - Dependency Injection (Spring) para wiring de componentes.
-  - Transaction Script (metodos del servicio con @Transactional).
+  - Transaction Script (métodos del servicio con @Transactional).
 
 ## Componentes construidos
-- Aplicacion principal:
+- Aplicación principal:
   - `src/main/java/com/marcosmdev/ec/APIRestMain/ApiRestMainApplication.java`
 - Controlador REST:
   - `src/main/java/com/marcosmdev/ec/APIRestMain/controller/ClienteController.java`
@@ -40,30 +40,30 @@ Proyecto Spring Boot para una API REST sencilla de gestion de clientes. Expone e
   - Entidad: `src/main/java/com/marcosmdev/ec/APIRestMain/model/entity/Cliente.java`
   - DTO: `src/main/java/com/marcosmdev/ec/APIRestMain/model/dto/ClienteDTO.java`
   - Payload de respuesta: `src/main/java/com/marcosmdev/ec/APIRestMain/model/payload/MensajeResponse.java`
-- Configuracion:
+- Configuración:
   - `src/main/resources/application.properties`
   - `src/main/resources/sql/schema.sql`
   - `src/main/resources/sql/data.sql`
-- Test basico:
+- Test básico:
   - `src/test/java/com/marcosmdev/ec/APIRestMain/ApiRestMainApplicationTests.java`
 
 ## Estructuras de datos aplicadas
 ### 1) `List<Cliente>`
-**Que es:** una lista es una coleccion ordenada de elementos. Imagina una fila donde cada elemento tiene una posicion (indice) que empieza en 0. En este proyecto, la lista contiene objetos `Cliente`.
+**Qué es:** una lista es una colección ordenada de elementos. Imagina una fila donde cada elemento tiene una posición (índice) que empieza en 0. En este proyecto, la lista contiene objetos `Cliente`.
 
-**Sintaxis basica en Java:**
+**Sintaxis básica en Java:**
 ```java
 List<Cliente> clientes = new ArrayList<>();
 ```
 - `List` es una interfaz (un contrato).
-- `ArrayList` es una implementacion concreta (la mas comun).
-- Los simbolos `<Cliente>` indican el tipo de elementos (generics).
+- `ArrayList` es una implementación concreta (la más común).
+- Los símbolos `<Cliente>` indican el tipo de elementos (generics).
 
-**Caracteristicas clave:**
+**Características clave:**
 - **Ordenada:** mantiene el orden en que se insertan los elementos.
-- **Indices:** puedes acceder con `get(0)`, `get(1)`, etc.
-- **Permite duplicados:** puedes tener dos clientes iguales segun `equals`.
-- **Tamanio dinamico:** crece o se reduce automaticamente.
+- **Índices:** puedes acceder con `get(0)`, `get(1)`, etc.
+- **Permite duplicados:** puedes tener dos clientes iguales según `equals`.
+- **Tamaño dinámico:** crece o se reduce automaticamente.
 
 **Uso en el proyecto:**
 - Se usa para devolver todos los clientes desde el servicio:
@@ -71,86 +71,86 @@ List<Cliente> clientes = new ArrayList<>();
 - El controlador expone ese listado en el endpoint `GET /clientes`.
 
 ### 2) `Map<String, Object>`
-**Que es:** un mapa es una estructura de pares **clave -> valor**. La clave es unica, y se usa para recuperar el valor.
+**Qué es:** un mapa es una estructura de pares **clave -> valor**. La clave es única, y se usa para recuperar el valor.
 
-**Sintaxis basica en Java:**
+**Sintaxis básica en Java:**
 ```java
 Map<String, Object> datos = new HashMap<>();
 datos.put("mensaje", "ok");
 datos.put("cliente", cliente);
 ```
 - `Map` es la interfaz.
-- `HashMap` es la implementacion mas usada.
+- `HashMap` es la implementación más usada.
 - `String` es el tipo de clave.
 - `Object` permite almacenar valores de distintos tipos.
 
-**Caracteristicas clave:**
+**Características clave:**
 - **No es una lista:** no hay indices numericos.
-- **Claves unicas:** si usas la misma clave, reemplazas el valor.
-- **Acceso rapido:** se busca por clave, no por posicion.
-- **Sin orden garantizado** (en `HashMap`): el orden de insercion no se conserva.
+- **Claves únicas:** si usas la misma clave, reemplazas el valor.
+- **Acceso rápido:** se busca por clave, no por posición.
+- **Sin orden garantizado** (en `HashMap`): el orden de inserción no se conserva.
 
 **Uso en el proyecto:**
 - Se puede usar para construir respuestas con multiples campos
   (aunque en este proyecto la respuesta principal se da con `MensajeResponse`).
 
 ### 3) `ResponseEntity<?>`
-**Que es:** no es una estructura de datos clasica como lista o mapa, sino un **contenedor** que representa la respuesta HTTP completa.
+**Qué es:** no es una estructura de datos clásica como lista o mapa, sino un **contenedor** que representa la respuesta HTTP completa.
 
-**Sintaxis basica en Java:**
+**Sintaxis básica en Java:**
 ```java
 ResponseEntity<MensajeResponse> resp =
     new ResponseEntity<>(mensajeResponse, HttpStatus.OK);
 ```
-- `ResponseEntity` encapsula **cuerpo** + **codigo HTTP** + **headers**.
-- El `<?>` significa "tipo generico desconocido" cuando no se quiere fijar uno.
+- `ResponseEntity` encapsula **cuerpo** + **código HTTP** + **headers**.
+- El `<?>` significa "tipo genérico desconocido" cuando no se quiere fijar uno.
 
-**Caracteristicas clave:**
+**Características clave:**
 - **Control total del HTTP:** puedes elegir el status (`200`, `201`, `404`, etc.).
 - **Cuerpo flexible:** cualquier objeto serializable a JSON.
-- **Headers opcionales:** tambien puedes agregar headers personalizados.
+- **Headers opcionales:** también puedes agregar headers personalizados.
 
 **Uso en el proyecto:**
 - Todos los endpoints retornan `ResponseEntity<?>` para controlar el status.
 
 ### 4) `Optional<Cliente>` (interno de JPA)
-**Que es:** `Optional` es un contenedor que puede tener **un valor** o **estar vacio**. Se usa para evitar `null` de forma explicita.
+**Qué es:** `Optional` es un contenedor que puede tener **un valor** o **estar vacío**. Se usa para evitar `null` de forma explícita.
 
-**Sintaxis basica en Java:**
+**Sintaxis básica en Java:**
 ```java
 Optional<Cliente> opt = clienteDao.findById(id);
 Cliente c = opt.orElse(null);
 ```
 - `Optional<Cliente>` indica "puede venir un Cliente o no".
-- Metodos comunes: `isPresent()`, `orElse(...)`, `orElseThrow(...)`.
+- Métodos comunes: `isPresent()`, `orElse(...)`, `orElseThrow(...)`.
 
-**Caracteristicas clave:**
+**Características clave:**
 - **Explicito:** obliga a pensar el caso "no existe".
 - **Evita NullPointerException** si se usa bien.
-- **No es coleccion:** solo 0 o 1 valor.
+- **No es colección:** solo 0 o 1 valor.
 
 **Uso en el proyecto:**
 - `ClienteDAO.findById` devuelve `Optional<Cliente>`.
 - El servicio lo transforma a `Cliente` o `null`.
 
 ### 5) `Serializable`
-**Que es:** es una interfaz de "marcado". No tiene metodos, pero indica que una clase **se puede convertir a bytes** (serializar).
+**Qué es:** es una interfaz de "marcado". No tiene métodos, pero indica que una clase **se puede convertir a bytes** (serializar).
 
-**Sintaxis basica en Java:**
+**Sintaxis básica en Java:**
 ```java
 public class Cliente implements Serializable {
     // ...
 }
 ```
 
-**Caracteristicas clave:**
+**Características clave:**
 - **Permite serializar** objetos (guardar, enviar, cachear).
-- **No requiere metodos**, solo implementar la interfaz.
-- **Uso comun en frameworks** que necesitan convertir objetos en JSON o transferirlos.
+- **No requiere métodos**, solo implementar la interfaz.
+- **Uso común en frameworks** que necesitan convertir objetos en JSON o transferirlos.
 
 **Uso en el proyecto:**
 - `Cliente`, `ClienteDTO` y `MensajeResponse` implementan `Serializable`
-  para permitir su uso en respuestas y en posibles procesos de serializacion.
+  para permitir su uso en respuestas y en posibles procesos de serialización.
 
 ## Flujo principal de la API
 1. El cliente invoca un endpoint en `ClienteController`.
@@ -276,7 +276,7 @@ Respuesta esperada (201):
 DELETE http://localhost:8080/api/v1/cliente/1
 Accept: application/json
 ```
-Respuesta esperada segun el codigo (204):
+Respuesta esperada según el código (204):
 ```json
 {
   "idCliente": 1,
@@ -288,21 +288,21 @@ Respuesta esperada segun el codigo (204):
 ```
 Nota: el controlador retorna `HttpStatus.NO_CONTENT` (204) pero incluye un cuerpo con el cliente eliminado. En HTTP, 204 normalmente no lleva contenido.
 
-## Rol de cada anotacion
+## Rol de cada anotación
 ### Spring Boot / Web
-- `@SpringBootApplication` (ApiRestMainApplication): habilita auto-configuracion, escaneo de componentes y configuracion de Spring Boot.
+- `@SpringBootApplication` (ApiRestMainApplication): habilita auto-configuración, escaneo de componentes y configuración de Spring Boot.
 - `@RestController` (ClienteController): marca la clase como controlador REST y serializa respuestas a JSON.
-- `@RequestMapping("/api/v1")` (ClienteController): prefijo comun para las rutas.
-- `@GetMapping` (ClienteController): mapea HTTP GET a metodos.
-- `@PostMapping` (ClienteController): mapea HTTP POST a metodos.
-- `@PutMapping` (ClienteController): mapea HTTP PUT a metodos.
-- `@DeleteMapping` (ClienteController): mapea HTTP DELETE a metodos.
+- `@RequestMapping("/api/v1")` (ClienteController): prefijo común para las rutas.
+- `@GetMapping` (ClienteController): mapea HTTP GET a métodos.
+- `@PostMapping` (ClienteController): mapea HTTP POST a métodos.
+- `@PutMapping` (ClienteController): mapea HTTP PUT a métodos.
+- `@DeleteMapping` (ClienteController): mapea HTTP DELETE a métodos.
 - `@RequestBody` (ClienteController): convierte el body JSON a DTO.
 - `@PathVariable` (ClienteController): toma variables de la URL.
-- `@Autowired` (ClienteController, ClienteImplService): inyeccion de dependencias.
+- `@Autowired` (ClienteController, ClienteImplService): inyección de dependencias.
 - `@Service` (ClienteImplService): registra el servicio como bean de Spring.
-- `@Transactional` (ClienteImplService): define el limite transaccional para operaciones de escritura.
-- `@Transactional(readOnly = true)` (ClienteImplService): transaccion de solo lectura para consultas.
+- `@Transactional` (ClienteImplService): define el límite transaccional para operaciones de escritura.
+- `@Transactional(readOnly = true)` (ClienteImplService): transacción de solo lectura para consultas.
 
 ### JPA / Persistencia
 - `@Entity` (Cliente): marca la clase como entidad JPA.
@@ -314,7 +314,7 @@ Nota: el controlador retorna `HttpStatus.NO_CONTENT` (204) pero incluye un cuerp
 ### Lombok
 - `@Data` (Cliente, ClienteDTO, MensajeResponse): genera getters, setters, equals, hashCode y toString.
 - `@AllArgsConstructor` (Cliente, ClienteDTO): genera constructor con todos los campos.
-- `@NoArgsConstructor` (Cliente, ClienteDTO): genera constructor vacio.
+- `@NoArgsConstructor` (Cliente, ClienteDTO): genera constructor vacío.
 - `@ToString` (Cliente, ClienteDTO, MensajeResponse): genera toString.
 - `@Builder` (Cliente, ClienteDTO, MensajeResponse): habilita el patron builder.
 
@@ -326,25 +326,25 @@ Nota: el controlador retorna `HttpStatus.NO_CONTENT` (204) pero incluye un cuerp
 - Tabla: `clientes`
 - Script de esquema: `src/main/resources/sql/schema.sql`
 - Datos iniciales: `src/main/resources/sql/data.sql`
-- Configuracion DB: `src/main/resources/application.properties`
+- Configuración DB: `src/main/resources/application.properties`
 
-## Observaciones de configuracion
-- `spring.jpa.hibernate.ddl-auto=none` desactiva la creacion automatica de tablas.
-- `spring.sql.init.mode=never` desactiva ejecucion automatica de scripts SQL.
+## Observaciones de configuración
+- `spring.jpa.hibernate.ddl-auto=none` desactiva la creación automatica de tablas.
+- `spring.sql.init.mode=never` desactiva ejecución automatica de scripts SQL.
 - `spring.datasource.password` se lee desde variable de entorno `DB_PASSWORD` definida en `.env`.
 
 ## Siguientes pasos recomendados
-1) Completar documentacion tecnica
+1) Completar documentación técnica
    - Agregar ejemplos de errores por endpoint (404, 405) con su JSON real.
-   - Documentar codigos HTTP esperados y condiciones de cada respuesta.
-   - Mantener `DOCUMENTACION_PROYECTO.md` como fuente unica para el proyecto.
+   - Documentar códigos HTTP esperados y condiciones de cada respuesta.
+   - Mantener `DOCUMENTACION_PROYECTO.md` como fuente única para el proyecto.
 
 2) Fortalecer Swagger/OpenAPI
    - Incluir ejemplos de request/response con `@ExampleObject`.
-   - Agregar anotaciones `@Schema` en `ClienteDTO`, `Cliente` y `MensajeResponse` para mejorar la descripcion de campos.
+   - Agregar anotaciones `@Schema` en `ClienteDTO`, `Cliente` y `MensajeResponse` para mejorar la descripción de campos.
    - Validar que `swagger-ui-custom.html` refleje lo que se expone en la API.
 
-3) Consolidar pruebas rapidas
+3) Consolidar pruebas rápidas
    - Ampliar `@WebMvcTest` con casos positivos y negativos por endpoint.
    - Verificar respuestas de error consistentes (mensaje y estructura).
    - Agregar pruebas unitarias del servicio para reglas de negocio.
@@ -356,8 +356,8 @@ Nota: el controlador retorna `HttpStatus.NO_CONTENT` (204) pero incluye un cuerp
 
 5) Mejorar validaciones de entrada
    - Agregar validaciones en DTO con `jakarta.validation` (`@NotBlank`, `@Email`, etc.).
-   - Manejar errores de validacion con respuestas estandarizadas.
-   - Documentar reglas de validacion en Swagger.
+   - Manejar errores de validación con respuestas estandarizadas.
+   - Documentar reglas de validación en Swagger.
 
 6) Preparar despliegue local y reproducible
    - Definir variables de entorno requeridas en un README corto.
